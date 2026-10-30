@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#100b1b">
+<title>Vice City After Dark — Countdown</title>
+<style>
+:root {
+  --site-primary: #ff6b2c;
+  --site-secondary: #ff3f9b;
+  --site-background: #100b1b;
+  --site-on-primary: #170b0a;
+  --site-on-secondary: #190817;
+  --site-on-background: #f8f2ff;
+  --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-font-heading: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+  --bg: #100b1b;
+  --surface: #1b1428;
+  --surface-2: #241a34;
+  --muted: #a99ab8;
+  --line: rgba(255,255,255,.10);
+  --pink: #ff4da6;
+  --cyan: #54e7ff;
+  --orange: #ff8b3d;
+  --purple: #a77bff;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; color: var(--site-on-background); background: var(--bg); font-family: var(--site-font-body); overflow-x: hidden; }
+button, input { font: inherit; }
+button { cursor: pointer; }
+#app { min-height: 100vh; width: 100%; border-radius: 0; position: relative; overflow: clip; background-color: var(--site-background); background-image: radial-gradient(ellipse at 15% 0%, rgba(255,103,45,.18), transparent 35%), radial-gradient(ellipse at 90% 20%, rgba(255,57,157,.15), transparent 34%), linear-gradient(180deg,#100b1b 0%,#120d20 50%,#0c0915 100%); }
+#app::before { content:""; position:absolute; inset:0; pointer-events:none; opacity:var(--site-decoration-opacity); background-image: radial-gradient(1px 1px at 12% 18%,#fff 50%,transparent 60%), radial-gradient(1px 1px at 78% 12%,#fff 50%,transparent 60%), radial-gradient(1px 1px at 53% 31%,#fff 50%,transparent 60%), radial-gradient(2px 2px at 88% 48%,#fff 50%,transparent 60%), radial-gradient(1px 1px at 26% 66%,#fff 50%,transparent 60%); background-size: 230px 210px; }
+.decor { position:absolute; pointer-events:none; z-index:0; opacity:var(--site-decoration-opacity); filter: drop-shadow(0 0 18px rgba(255,111,49,.2)); animation: bob 6s ease-in-out infinite; }
+.pumpkin { font-size: clamp(30px,5vw,66px); }
+.ghost { font-size: clamp(24px,4vw,52px); animation-delay:-2s; }
+.bat { font-size: 30px; animation-delay:-3s; }
+@keyframes bob { 0%,100%{transform:translateY(0) rotate(-5deg)} 50%{transform:translateY(-16px) rotate(5deg)} }
+@keyframes pulse { 0%,100%{opacity:.7; transform:scale(1)} 50%{opacity:1; transform:scale(1.04)} }
+@keyframes rise { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+@keyframes glow { 0%,100%{text-shadow:0 0 12px rgba(255,74,164,.35)} 50%{text-shadow:0 0 28px rgba(84,231,255,.65)} }
+@keyframes spin { to{transform:rotate(360deg)} }
+.topbar { position:relative; z-index:5; max-width:1220px; margin:auto; padding:22px 26px; display:flex; align-items:center; justify-content:space-between; gap:18px; }
+.brand { display:flex; align-items:center; gap:11px; font-weight:900; letter-spacing:.12em; font-size:13px; text-transform:uppercase; }
+.brand-mark { width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,var(--orange),var(--pink));color:#1b0b16;box-shadow:0 0 25px rgba(255,82,140,.3); }
+.nav { display:flex; gap:8px; align-items:center; }
+.nav a { text-decoration:none;color:#cfc2dc;font-size:12px;font-weight:700;padding:10px 13px;border-radius:999px;transition:.25s; }
+.nav a:hover { color:white;background:rgba(255,255,255,.08); }
+.live { display:flex;align-items:center;gap:7px;color:#ffc08c;font-size:10px;letter-spacing:.14em;font-weight:900;text-transform:uppercase; }
+.live i { width:7px;height:7px;border-radius:50%;background:#ff7548;box-shadow:0 0 12px #ff7548;animation:pulse 1.4s infinite; }
+.hero { position:relative; z-index:1; max-width:1120px; margin:0 auto; padding:68px 24px 55px; text-align:center; }
+.eyebrow { color:#ffb16f;letter-spacing:.32em;font-size:10px;font-weight:900;text-transform:uppercase; }
+.hero h1 { margin:19px 0 12px;font-size:clamp(43px,8.5vw,104px);line-height:.92;letter-spacing:-.075em;font-weight:1000; animation:rise .8s both; }
+.hero h1 span { display:block;background:linear-gradient(100deg,#ff9a42 2%,#ff4d9d 42%,#9c8bff 72%,#53e5ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 9px 35px rgba(255,70,150,.15)); }
+.hero p { max-width:590px;margin:22px auto 0;color:#b8a9c7;font-size:14px;line-height:1.8; }
+.hero-actions { display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:28px; }
+.btn { border:1px solid var(--line);padding:12px 18px;border-radius:999px;color:white;background:rgba(255,255,255,.055);font-size:11px;font-weight:900;letter-spacing:.06em;transition:.25s;text-decoration:none; }
+.btn.primary { background:linear-gradient(100deg,#ff8a38,#ff4a9c);color:#210b18;border:0;box-shadow:0 8px 28px rgba(255,69,140,.2); }
+.btn:hover { transform:translateY(-3px);filter:brightness(1.12); }
+.section { position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:36px 24px; }
+.section-head { display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:19px; }
+.kicker { color:#ff9b67;font-size:10px;letter-spacing:.25em;font-weight:900;text-transform:uppercase; }
+.section h2 { margin:7px 0 0;font-size:clamp(23px,4vw,34px);letter-spacing:-.045em; }
+.section-note { color:var(--muted);font-size:11px; }
+.count-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:14px; }
+.count-card { min-height:260px;position:relative;overflow:hidden;border:1px solid var(--line);border-radius:calc(23px * var(--site-radius-scale));padding:22px;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018));box-shadow:0 20px 60px rgba(0,0,0,.16);transition:transform .35s,border-color .35s; }
+.count-card:hover { transform:translateY(-6px);border-color:rgba(255,255,255,.25); }
+.count-card::after { content:"";position:absolute;width:170px;height:170px;right:-70px;top:-75px;border-radius:50%;background:var(--glow);filter:blur(3px);opacity:.16; }
+.count-card.halloween { --glow:#ff852e;--accent:#ff9a50; }
+.count-card.preload { --glow:#58e8ff;--accent:#6ceaff; }
+.count-card.launch { --glow:#ff4d9e;--accent:#ff65b3; }
+.card-top { display:flex;justify-content:space-between;align-items:center;gap:10px;position:relative;z-index:1; }
+.card-icon { font-size:25px; }
+.tag { border:1px solid color-mix(in srgb,var(--accent),transparent 60%);color:var(--accent);padding:6px 9px;border-radius:99px;font-size:8px;letter-spacing:.14em;font-weight:900;text-transform:uppercase; }
+.count-card h3 { margin:18px 0 5px;font-size:18px;letter-spacing:-.03em;position:relative;z-index:1; }
+.date { color:#a99bb9;font-size:10px;position:relative;z-index:1; }
+.timer { display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:22px;position:relative;z-index:1; }
+.unit { background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:12px 4px 9px;text-align:center; }
+.unit strong { display:block;font-size:clamp(20px,3vw,31px);font-variant-numeric:tabular-nums;letter-spacing:-.06em;color:var(--accent); }
+.unit small { display:block;margin-top:4px;font-size:8px;color:#a99ab8;text-transform:uppercase;letter-spacing:.12em; }
+.status { margin-top:13px;font-size:9px;color:#c5b6d2;position:relative;z-index:1; }
+.progress-wrap { margin-top:11px;height:3px;background:rgba(255,255,255,.08);border-radius:9px;overflow:hidden; }
+.progress { height:100%;width:0;background:linear-gradient(90deg,var(--accent),#fff);border-radius:9px;transition:width .8s; }
+.split { display:grid;grid-template-columns:1.15fr .85fr;gap:16px; }
+.panel { background:rgba(28,20,42,.82);border:1px solid var(--line);border-radius:calc(22px * var(--site-radius-scale));padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.14); }
+.panel-title { display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:17px; }
+.panel-title h3 { margin:0;font-size:16px; }
+.pill { color:#a9eefa;background:rgba(84,231,255,.08);border:1px solid rgba(84,231,255,.18);padding:6px 9px;border-radius:99px;font-size:8px;letter-spacing:.1em;text-transform:uppercase;font-weight:900; }
+.track-list { display:grid;gap:8px; }
+.track { display:grid;grid-template-columns:36px 1fr auto;align-items:center;gap:11px;padding:10px;border-radius:13px;border:1px solid transparent;background:rgba(255,255,255,.035);transition:.2s; }
+.track.active { background:rgba(255,75,158,.09);border-color:rgba(255,75,158,.28); }
+.play-track { width:34px;height:34px;border:0;border-radius:50%;background:linear-gradient(135deg,#ff8a3d,#ff4a9c);color:#1b0b16;font-weight:900; }
+.track-name { font-size:11px;font-weight:800; }
+.track-file { color:#897d98;font-size:9px;margin-top:3px; }
+.track-time { color:#9688a4;font-size:9px; }
+.player-controls { display:flex;align-items:center;gap:10px;margin-top:16px; }
+.player-controls button { width:35px;height:35px;border-radius:50%;border:1px solid var(--line);color:white;background:rgba(255,255,255,.06); }
+.player-controls .main-play { width:43px;height:43px;background:linear-gradient(135deg,#ff8a3d,#ff4a9c);border:0;color:#1a0b17;font-weight:900; }
+.now-playing { flex:1;min-width:0; }
+.now-playing strong { display:block;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.now-playing span { display:block;font-size:9px;color:#9688a4;margin-top:3px; }
+.volume { width:75px;accent-color:#ff65a8; }
+.player-progress { display:flex;align-items:center;gap:8px;margin-top:13px;color:#897d98;font-size:8px; }
+.player-progress input { flex:1;accent-color:#ff5aa5; }
+.upload-row { display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:14px;padding-top:13px;border-top:1px solid var(--line); }
+.upload-row small { color:#978aa5;font-size:9px;line-height:1.5; }
+.file-label { padding:8px 11px;border-radius:99px;border:1px solid var(--line);font-size:9px;font-weight:800;white-space:nowrap;cursor:pointer; }
+.file-label input { display:none; }
+.feed { display:grid;gap:10px; }
+.post { padding:14px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06); }
+.post-head { display:flex;align-items:center;gap:9px; }
+.rockstar { width:29px;height:29px;border-radius:9px;display:grid;place-items:center;background:#f4e9d4;color:#171019;font-size:12px;font-weight:1000; }
+.post-head strong { font-size:10px; }
+.verified { color:#62dfff;font-size:11px; }
+.post-head small { color:#8e819b;font-size:8px;margin-left:auto; }
+.post p { color:#c5b9d0;font-size:10px;line-height:1.65;margin:11px 0 10px; }
+.post a { color:#ff8cbb;text-decoration:none;font-size:9px;font-weight:800; }
+.news-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:13px; }
+.news-card { border:1px solid var(--line);border-radius:17px;padding:17px;background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.02));transition:.25s; }
+.news-card:hover { transform:translateY(-4px);border-color:rgba(255,255,255,.23); }
+.news-card .date-label { color:#ff9a6c;font-size:8px;letter-spacing:.16em;font-weight:900;text-transform:uppercase; }
+.news-card h3 { font-size:13px;line-height:1.4;margin:11px 0 8px; }
+.news-card p { color:#a99bb8;font-size:10px;line-height:1.65;margin:0 0 14px; }
+.news-card a { color:#75eaff;font-size:9px;text-decoration:none;font-weight:900; }
+.footer { position:relative;z-index:1;text-align:center;padding:42px 20px 70px;color:#766a83;font-size:9px;line-height:1.8; }
+.footer b { color:#c8b6d5;letter-spacing:.14em; }
+.music-fab { position:fixed;right:22px;bottom:22px;z-index:20;width:57px;height:57px;border:0;border-radius:50%;background:linear-gradient(135deg,#ff8a3d,#ff3f9b);color:#1b0b16;font-size:21px;box-shadow:0 9px 35px rgba(255,62,147,.35);transition:.25s; }
+.music-fab:hover { transform:scale(1.08) rotate(-8deg); }
+.music-drawer { position:fixed;z-index:19;right:22px;bottom:91px;width:min(390px,calc(100vw - 28px));max-height:min(78vh,680px);overflow:auto;background:rgba(21,15,32,.97);backdrop-filter:blur(22px);border:1px solid rgba(255,255,255,.14);border-radius:22px;padding:18px;box-shadow:0 25px 80px rgba(0,0,0,.55);transform:translateY(18px) scale(.97);opacity:0;pointer-events:none;transition:.28s; }
+.music-drawer.open { transform:translateY(0) scale(1);opacity:1;pointer-events:auto; }
+.drawer-head { display:flex;justify-content:space-between;align-items:center;margin-bottom:13px; }
+.drawer-head h3 { margin:0;font-size:14px; }
+.close { background:rgba(255,255,255,.08);border:0;color:white;border-radius:50%;width:29px;height:29px; }
+.mobile-nav { display:none; }
+@media(max-width:850px) { .count-grid{grid-template-columns:1fr 1fr}.count-card:last-child{grid-column:span 2}.split{grid-template-columns:1fr}.news-grid{grid-template-columns:1fr 1fr} }
+@media(max-width:600px) { .topbar{padding:17px 17px}.nav{display:none}.hero{padding:55px 20px 38px}.section{padding:27px 17px}.section-head{align-items:start;flex-direction:column}.count-grid{grid-template-columns:1fr}.count-card:last-child{grid-column:auto}.count-card{min-height:245px}.news-grid{grid-template-columns:1fr}.panel{padding:17px}.music-fab{right:15px;bottom:15px}.music-drawer{right:14px;bottom:82px}.decor{opacity:.65} }
+@media(prefers-reduced-motion:reduce) { *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important} }
+</style>
+</head>
+<body>
+<div id="app">
+  <span class="decor pumpkin" style="top:130px;left:4%">🎃</span>
+  <span class="decor ghost" style="top:285px;right:7%">👻</span>
+  <span class="decor bat" style="top:510px;left:8%">🦇</span>
+  <span class="decor pumpkin" style="top:790px;right:4%">🎃</span>
+  <span class="decor ghost" style="top:1200px;left:3%">👻</span>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">✦</span><span>Vice City <span style="color:#ff70ac">After Dark</span></span></div>
+    <nav class="nav"><a href="#countdowns">COUNTDOWNS</a><a href="#music">SOUNDTRACK</a><a href="#social">SOCIAL FEED</a><a href="#news">NEWSWIRE</a></nav>
+    <div class="live"><i></i> COUNTDOWN LIVE</div>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">✦ Leonida is calling · October 2026 ✦</div>
+      <h1>THE NIGHT<br><span>BEFORE VICE CITY</span></h1>
+      <p>Three dates. One legendary wait. Get your Halloween night started, then count every second until pre-load and the return to Vice City.</p>
+      <div class="hero-actions"><a class="btn primary" href="#countdowns">VIEW THE COUNTDOWNS ↓</a><button class="btn" id="heroMusic">♫ OPEN THE SOUNDTRACK</button></div>
+    </section>
+    <section class="section" id="countdowns">
+      <div class="section-head"><div><div class="kicker">Mark the calendar</div><h2>Three moments. One big night.</h2></div><div class="section-note" id="localClock">YOUR LOCAL TIME</div></div>
+      <div class="count-grid">
+        <article class="count-card halloween"><div class="card-top"><span class="card-icon">🎃</span><span class="tag">Next up · spooky season</span></div><h3>Halloween Night</h3><div class="date">October 31, 2026 · Local midnight</div><div class="timer" id="timer-halloween"></div><div class="status" id="status-halloween">The pumpkins are waiting…</div><div class="progress-wrap"><div class="progress" id="progress-halloween"></div></div></article>
+        <article class="count-card preload"><div class="card-top"><span class="card-icon">💾</span><span class="tag">Pre-load begins</span></div><h3>GTA VI Pre-load</h3><div class="date">November 12, 2026 · Local midnight</div><div class="timer" id="timer-preload"></div><div class="status" id="status-preload">Get that storage ready.</div><div class="progress-wrap"><div class="progress" id="progress-preload"></div></div></article>
+        <article class="count-card launch"><div class="card-top"><span class="card-icon">🌴</span><span class="tag">The big one</span></div><h3>Grand Theft Auto VI</h3><div class="date">November 19, 2026 · Launch day</div><div class="timer" id="timer-launch"></div><div class="status" id="status-launch">Welcome back to Vice City.</div><div class="progress-wrap"><div class="progress" id="progress-launch"></div></div></article>
+      </div>
+    </section>
+    <section class="section" id="music">
+      <div class="section-head"><div><div class="kicker">Vice City FM</div><h2>The soundtrack room</h2></div><div class="section-note">YOUR FOUR-TRACK PLAYLIST</div></div>
+      <div class="split">
+        <div class="panel">
+          <div class="panel-title"><h3>♫ Now spinning</h3><span class="pill">LOCAL PLAYER</span></div>
+          <div class="track-list" id="trackList"></div>
+          <div class="player-controls"><button id="prevTrack" aria-label="Previous track">◀</button><button class="main-play" id="playPause" aria-label="Play or pause">▶</button><button id="nextTrack" aria-label="Next track">▶</button><div class="now-playing"><strong id="nowTitle">Por Favor</strong><span id="nowArtist">Vice City soundtrack</span></div><input class="volume" id="volume" type="range" min="0" max="1" step=".01" value=".8" aria-label="Volume"></div>
+          <div class="player-progress"><span id="elapsed">0:00</span><input id="seek" type="range" min="0" max="100" value="0"><span id="duration">0:00</span></div>
+          <audio id="audio" preload="metadata"></audio>
+        </div>
+        <div class="panel" id="social">
+          <div class="panel-title"><h3>Rockstar social desk</h3><span class="pill">OFFICIAL HIGHLIGHTS</span></div>
+          <div class="feed">
+            <article class="post"><div class="post-head"><div class="rockstar">R*</div><strong>Rockstar Games <span class="verified">✦</span></strong><small>OCT 15, 2026</small></div><p>Watch the Grand Theft Auto VI Launch Trailer. Listen to the new single “Flower in a Hurricane” from Justice.</p><a href="https://www.rockstargames.com/newswire/article/517572321a549a/watch-the-grand-theft-auto-vi-launch-trailer" target="_blank" rel="noopener">OPEN NEWSWIRE ↗</a></article>
+            <article class="post"><div class="post-head"><div class="rockstar">R*</div><strong>Rockstar Games <span class="verified">✦</span></strong><small>SEP 17, 2026</small></div><p>Announcing Grand Theft Auto VI: The Album, coming November 19. The music of Leonida is getting closer.</p><a href="https://www.rockstargames.com/newswire" target="_blank" rel="noopener">VIEW ROCKSTAR NEWS ↗</a></article>
+            <article class="post"><div class="post-head"><div class="rockstar">R*</div><strong>Rockstar Games <span class="verified">✦</span></strong><small>JUN 24, 2026</small></div><p>Pre-orders are live. Digital pre-load is scheduled to begin November 12 at local midnight.</p><a href="https://www.rockstargames.com/newswire/article/5171972o3ak5oa/pre-order-grand-theft-auto-vi-on-june-25" target="_blank" rel="noopener">READ THE ANNOUNCEMENT ↗</a></article>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="news">
+      <div class="section-head"><div><div class="kicker">Straight from the Newswire</div><h2>Latest from Rockstar</h2></div><a class="btn" href="https://www.rockstargames.com/newswire" target="_blank" rel="noopener">ALL NEWSWIRE ↗</a></div>
+      <div class="news-grid">
+        <article class="news-card"><div class="date-label">October 15, 2026 · GTA VI</div><h3>Watch the Grand Theft Auto VI Launch Trailer</h3><p>Rockstar shares the launch trailer and spotlights “Flower in a Hurricane,” a new Justice single.</p><a href="https://www.rockstargames.com/newswire/article/517572321a549a/watch-the-grand-theft-auto-vi-launch-trailer" target="_blank" rel="noopener">READ STORY ↗</a></article>
+        <article class="news-card"><div class="date-label">October 8, 2026 · GTA VI</div><h3>The Music of GTA VI: In-Game Radio Stations</h3><p>Explore the sounds and radio-station world coming to the next Grand Theft Auto.</p><a href="https://www.rockstargames.com/newswire" target="_blank" rel="noopener">FIND ON NEWSWIRE ↗</a></article>
+        <article class="news-card"><div class="date-label">September 17, 2026 · GTA VI</div><h3>Announcing Grand Theft Auto VI: The Album</h3><p>The official soundtrack album is set to arrive alongside the game on November 19.</p><a href="https://www.rockstargames.com/newswire" target="_blank" rel="noopener">FIND ON NEWSWIRE ↗</a></article>
+      </div>
+    </section>
+  </main>
+  <footer class="footer"><b>VICE CITY AFTER DARK</b><br>Fan-made countdown experience. Not affiliated with or endorsed by Rockstar Games.<br>Dates and announcements linked to official Rockstar sources. All times use your device's local timezone.</footer>
+</div>
+<button class="music-fab" id="musicFab" aria-label="Open music player">♫</button>
+<aside class="music-drawer" id="musicDrawer" aria-label="Music player drawer"><div class="drawer-head"><h3>♫ Vice City soundtrack</h3><button class="close" id="closeDrawer" aria-label="Close player">✕</button></div><div id="drawerContent"></div></aside>
+<script>
+const targets = {
+  halloween: { date: new Date(2026, 9, 31, 0, 0, 0), start: new Date(2026, 9, 30, 0, 0, 0), yearly: true },
+  preload: { date: new Date(2026, 10, 12, 0, 0, 0), start: new Date(2026, 9, 31, 0, 0, 0) },
+  launch: { date: new Date(2026, 10, 19, 0, 0, 0), start: new Date(2026, 9, 30, 0, 0, 0) }
+};
+const pad = n => String(n).padStart(2,'0');
+function renderTimer(key, now) {
+  const config = targets[key];
+  let target = config.date;
+  let start = config.start;
+  if (config.yearly && now >= target) {
+    target = new Date(now.getFullYear() + 1, 9, 31, 0, 0, 0);
+    start = new Date(now.getFullYear(), 9, 31, 0, 0, 0);
+  }
+  const diff = target - now;
+  const el = document.getElementById('timer-' + key);
+  const status = document.getElementById('status-' + key);
+  const progress = document.getElementById('progress-' + key);
+  if (diff <= 0) {
+    el.innerHTML = '<div class="unit"><strong>🎉</strong><small>IT IS HERE</small></div><div class="unit"><strong>00</strong><small>HOURS</small></div><div class="unit"><strong>00</strong><small>MINUTES</small></div><div class="unit"><strong>00</strong><small>SECONDS</small></div>';
+    status.textContent = key === 'halloween' ? 'Happy Halloween! 🎃' : key === 'preload' ? 'Pre-load day is here. Check your platform!' : 'GTA VI launch day. Welcome to Leonida.';
+    progress.style.width = '100%'; return;
+  }
+  const total = Math.floor(diff / 1000);
+  const days = Math.floor(total / 86400);
+  const hours = Math.floor(total % 86400 / 3600);
+  const mins = Math.floor(total % 3600 / 60);
+  const secs = total % 60;
+  el.innerHTML = [[days,'DAYS'],[pad(hours),'HOURS'],[pad(mins),'MINS'],[pad(secs),'SECS']].map(([v,l]) => `<div class="unit"><strong>${v}</strong><small>${l}</small></div>`).join('');
+  const span = target - start;
+  const pct = Math.max(0, Math.min(100, (now - start) / span * 100));
+  progress.style.width = pct + '%';
+  status.textContent = key === 'halloween' ? 'The spooky countdown is almost over.' : key === 'preload' ? 'Digital pre-load begins at local midnight.' : 'The road to Vice City is getting shorter.';
+}
+function tick() {
+  const now = new Date();
+  Object.keys(targets).forEach(k => renderTimer(k, now));
+  document.getElementById('localClock').textContent = 'YOUR LOCAL TIME · ' + now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+tick(); setInterval(tick, 1000);
+
+const tracks = [
+  { title:'Por Favor', file:'Track1.mp3', artist:'Vice City soundtrack' },
+  { title:'B2b', file:'Track2.mp3', artist:'Vice City soundtrack' },
+  { title:'Pusher', file:'Track3.mp3', artist:'Vice City soundtrack' },
+  { title:'Flower in a Hurricane', file:'Track4.mp3', artist:'Vice City soundtrack' }
+];
+let current = 0;
+const audio = document.getElementById('audio');
+const trackList = document.getElementById('trackList');
+const playPause = document.getElementById('playPause');
+function drawTracks() {
+  trackList.innerHTML = tracks.map((t,i) => `<div class="track ${i===current?'active':''}"><button class="play-track" data-track="${i}" aria-label="Play ${t.title}">${i===current && !audio.paused?'Ⅱ':'▶'}</button><div><div class="track-name">${t.title}</div><div class="track-file">LOCAL AUDIO</div></div><span class="track-time">PLAY</span></div>`).join('');
+  trackList.querySelectorAll('[data-track]').forEach(b => b.addEventListener('click',()=>loadTrack(Number(b.dataset.track),true)));
+  document.getElementById('drawerContent').innerHTML = trackList.innerHTML;
+  document.getElementById('drawerContent').querySelectorAll('[data-track]').forEach(b => b.addEventListener('click',()=>loadTrack(Number(b.dataset.track),true)));
+}
+function loadTrack(i, autoplay=false) {
+  current = (i + tracks.length) % tracks.length;
+  audio.src = tracks[current].file;
+  document.getElementById('nowTitle').textContent = tracks[current].title;
+  document.getElementById('nowArtist').textContent = tracks[current].artist;
+  drawTracks();
+  if (autoplay) audio.play().then(()=>{playPause.textContent='Ⅱ';drawTracks();}).catch(()=>{playPause.textContent='▶';});
+  else playPause.textContent='▶';
+}
+function togglePlay() {
+  if (audio.paused) audio.play().then(()=>{playPause.textContent='Ⅱ';drawTracks();}).catch(()=>{document.getElementById('nowArtist').textContent='Check that the MP3 files are beside index.html.';});
+  else { audio.pause(); playPause.textContent='▶'; drawTracks(); }
+}
+playPause.addEventListener('click',togglePlay);
+document.getElementById('prevTrack').addEventListener('click',()=>loadTrack(current-1,true));
+document.getElementById('nextTrack').addEventListener('click',()=>loadTrack(current+1,true));
+audio.addEventListener('ended',()=>loadTrack(current+1,true));
+audio.addEventListener('play',()=>{playPause.textContent='Ⅱ';drawTracks();});
+audio.addEventListener('pause',()=>{playPause.textContent='▶';drawTracks();});
+audio.addEventListener('timeupdate',()=>{
+  const d=audio.duration||0, t=audio.currentTime||0;
+  document.getElementById('seek').value=d?t/d*100:0;
+  document.getElementById('elapsed').textContent=formatTime(t);
+  document.getElementById('duration').textContent=formatTime(d);
+});
+function formatTime(s){if(!Number.isFinite(s))return '0:00';return Math.floor(s/60)+':'+pad(Math.floor(s%60));}
+document.getElementById('seek').addEventListener('input',e=>{if(audio.duration)audio.currentTime=audio.duration*Number(e.target.value)/100;});
+document.getElementById('volume').addEventListener('input',e=>audio.volume=Number(e.target.value));
+audio.volume=.8; loadTrack(0,false); drawTracks();
+const drawer=document.getElementById('musicDrawer');
+function openDrawer(){drawer.classList.add('open');}
+function closeDrawer(){drawer.classList.remove('open');}
+document.getElementById('musicFab').addEventListener('click',()=>drawer.classList.toggle('open'));
+document.getElementById('heroMusic').addEventListener('click',openDrawer);
+document.getElementById('closeDrawer').addEventListener('click',closeDrawer);
+</script>
+</body>
+</html>
